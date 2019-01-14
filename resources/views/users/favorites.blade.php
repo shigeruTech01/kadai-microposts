@@ -3,12 +3,13 @@
 @section('content')
     <div class="row">
         <aside class="col-sm-4">
-            @include('users.card', ['user' => $user])
+            @include('users.card', ['user' => Auth::user()])
         </aside>
         <div class="col-sm-8">
             @include('users.navtabs', ['user' => $user])
-            @include('users.users', ['users' => $users])
+            @if (count($favorites) > 0)
+                @include('microposts.microposts', ['microposts' => $favorites])
+            @endif
         </div>
     </div>
-    <p>テスト</p>
 @endsection

@@ -10,8 +10,8 @@ class UsersController extends Controller
 {
     public function index()
     {
-        //$users = User::orderBy('id', 'desc')->paginate(10);
-        $users = User::orderBy('id', 'desc')->paginate(2);
+        $users = User::orderBy('id', 'desc')->paginate(10);
+        //$users = User::orderBy('id', 'desc')->paginate(2);
         
         return view('users.index', [
             'users' => $users,
@@ -63,6 +63,7 @@ class UsersController extends Controller
         return view('users.followers', $data);
     }
     
+    //お気に入り一覧表示(favorites.blade)
     public function favorites($id)
     {
         $user = User::find($id);

@@ -90,7 +90,7 @@ class User extends Authenticatable
     
     public function favorites()
     {
-        return $this->belongsToMany(User::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
+        return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
     }
     
     public function favorite($micropostId)
@@ -129,7 +129,8 @@ class User extends Authenticatable
     
     public function is_favorite($micropostId)
     {
-        return $this->favorites()->where('user_id', $micropostId)->exists();
+        //whererの第一引数はデータテーブルのカラム名
+        return $this->favorites()->where('micropost_id', $micropostId)->exists();
     }
     
 }
