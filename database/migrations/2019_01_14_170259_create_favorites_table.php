@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUserIdToMicropostsTable extends Migration
+class CreateFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class AddUserIdToMicropostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('user_follow', function (Blueprint $table) {
+        Schema::create('favorites', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->integer('follow_id')->unsigned()->index();
-            
-            // 外部キー設定
+            $table->integer('micropost_id')->unsigned()->index();
+            $table->timestamps();
+            //外部キー設定
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('follow_id')->references('id')->on('users')->onDelete('cascade');
-            
+            $table->foreign('micropost_id')->references('id')->on('users')->onDelete('cascade');
             // user_idとfollow_idの組み合わせの重複を許さない
-            $table->unique(['user_id', 'follow_id']);
+            $table->unique(['user_id', 'micropost_id']);
+            
         });
     }
 
@@ -33,9 +34,6 @@ class AddUserIdToMicropostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_follow', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-            $table->dropColumn('follow_id');
-        });
+        Schema::dropIfExists('favorites');
     }
 }
